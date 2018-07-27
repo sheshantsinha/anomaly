@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+	<script type="text/javascript">
+		function hello()
+		{
+			//alert('hello')
+			var api=$("#api").val()
+			var oprt=$("#operator").val()
+			var lim=$("#limit").val()
+			if ($.trim(api).length>0 & $.trim(oprt).length>0 & $.trim(lim).length>0)
+			{
+			$.ajax({
+				type:'POST',
+				url:'http://ai.msg91.com:8001/getdata',
+				data:{"api":api,"data":oprt,"limit":lim},
+				dataType:'json',
+				crossorigin:true,
+				success:function(data){
+					//console.log(data)
+					da=JSON.parse(data)
+					console.log(da)
+					if (da.Available==1)
+					{
+						$(".rid").empty()
+						$(".rid").append("<div class='rid_worst'><h1>Worst ID</h1></div><div class='rid_Moderate'><h1>Moderate ID</h1></div><div class='rid_Best'><h1>Best ID</h1></div>")
+
+					}
+					else if(da.Available==3)
+					{
+						alert(da.Available)
+						$("#api").empty()
+					}
+				}
+			})
+			}
+			else{
+				alert('Some field/s are empty')
+			}
+		}
+	</script>
+</head>
+<body>
+<input type="text" name="" id="api" placeholder="Token">
+<input type="text" name="" id='operator' placeholder="Operator name">
+<input type="number" name="" id='limit' placeholder="Limit">
+<button onclick="hello()">Get</button>
+<div class="rid">
+	
+</div>
+</body>
+</html>
